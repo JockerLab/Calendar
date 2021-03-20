@@ -1,0 +1,37 @@
+<mvc:View
+    controllerName="itmo2021calendarsvv.controller.Calendar"
+    xmlns:l="sap.ui.layout"
+    xmlns:u="sap.ui.unified"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    class="viewPadding"
+>
+	<l:VerticalLayout>
+		<u:Calendar
+            id="calendar"
+            months="12"
+            showWeekNumbers="false"
+            select="handleCalendarSelect"
+            intervalSelection="true"
+            weekNumberSelect="handleWeekNumberSelect"
+            class="sapUiResponsiveMargin"/>
+		<l:HorizontalLayout>
+			<Label
+                text="Selected From (yyyy-mm-dd):"
+                class="labelMarginLeft" />
+			<Text
+                id="selectedDateFrom"
+                text="No Date Selected"
+                class="labelMarginLeft"/>
+		</l:HorizontalLayout>
+		<l:HorizontalLayout>
+			<Label
+                text="Selected To (yyyy-mm-dd):"
+                class="labelMarginLeft" />
+			<Text
+                id="selectedDateTo"
+                text="No Date Selected"
+                class="labelMarginLeft"/>
+		</l:HorizontalLayout>
+	</l:VerticalLayout>
+</mvc:View>
