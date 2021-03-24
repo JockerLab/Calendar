@@ -14,7 +14,7 @@
             select="handleCalendarSelect"
             intervalSelection="true"
             weekNumberSelect="handleWeekNumberSelect"
-            class="sapUiResponsiveMargin"/>
+            width="100%"/>
 		<l:HorizontalLayout>
 			<Label
                 text="Selected From (yyyy-mm-dd):"
