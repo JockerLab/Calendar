@@ -15,23 +15,5 @@
             intervalSelection="true"
             weekNumberSelect="handleWeekNumberSelect"
             width="100%"/>
-		<l:HorizontalLayout>
-			<Label
-                text="Selected From (yyyy-mm-dd):"
-                class="labelMarginLeft" />
-			<Text
-                id="selectedDateFrom"
-                text="No Date Selected"
-                class="labelMarginLeft"/>
-		</l:HorizontalLayout>
-		<l:HorizontalLayout>
-			<Label
-                text="Selected To (yyyy-mm-dd):"
-                class="labelMarginLeft" />
-			<Text
-                id="selectedDateTo"
-                text="No Date Selected"
-                class="labelMarginLeft"/>
-		</l:HorizontalLayout>
 	</l:VerticalLayout>
 </mvc:View>
