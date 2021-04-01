@@ -6,3 +6,4 @@ Makefile*.mta
 mta_archives
 mta-*
 resources
+package-lock.json

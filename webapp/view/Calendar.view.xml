@@ -14,6 +14,9 @@
             select="handleCalendarSelect"
             intervalSelection="true"
             weekNumberSelect="handleWeekNumberSelect"
-            width="100%"/>
+            width="100%"
+            legend="legend"/>
+        <u:CalendarLegend
+			id="legend"/>
 	</l:VerticalLayout>
 </mvc:View>

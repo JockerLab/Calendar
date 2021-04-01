@@ -10,7 +10,13 @@
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
     "resources": "resources.json",
-    "ach": "ach"
+    "ach": "ach",
+    "dataSources": {
+	  "holidaysRemote": {
+		"uri": "https://raw.githubusercontent.com/xmlcalendar/data/72a9c34dcb65d2a955eddb1e97809cb84198b9fa/ru/2021/calendar.xml",
+		"type": "XML"
+	  }
+	}
   },
   "sap.ui": {
     "technology": "UI5",
@@ -56,6 +62,10 @@
         "settings": {
           "bundleName": "itmo2021calendarsvv.i18n.i18n"
         }
+      },
+      "holidays": {
+        "dataSource": "holidaysRemote",
+        "preload": true
       }
     },
     "resources": {
