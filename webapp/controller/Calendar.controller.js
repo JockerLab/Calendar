@@ -17,6 +17,7 @@ sap.ui.define([
             _workingId: 0,
             _partlyId: 0,
             _currentYear: "2021",
+            _selectedDates: null,
 
             onInit: function() {
                 var oCalendar = this.byId("calendar");
@@ -29,6 +30,15 @@ sap.ui.define([
                 oHead.setVisible(false);
                 this._getHolidays(oHolidays, oLegend);
                 this._getDays(oDays, oCalendar);
+            },
+
+            handleCalendarSelect: function(oEvent) {
+                var oCalendar = oEvent.getSource();
+                this._selectedDates = oCalendar.getSelectedDates()[0];
+            },
+
+            getSelectedDates: function() {
+                return this._selectedDates;
             },
 
             _addHoliday: function(oLegend, oId, oTitle) {
@@ -100,5 +110,4 @@ sap.ui.define([
                 }
             }
         });
-
     });

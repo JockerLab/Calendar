@@ -9,6 +9,13 @@
 			<pages>
 				<Page id="page" title="{i18n>title}">
 					<content>
+                        <Button
+                            text="Добавить отпуск"
+                            press=".onAddVacation"/>
+                        <Button
+                            text="Отменить отпуск"
+                            press=".onCancelVacation"/>
+                        <mvc:XMLView viewName="itmo2021calendarsvv.view.VacationTable"/>
                         <mvc:XMLView viewName="itmo2021calendarsvv.view.Calendar"/>
                     </content>
 				</Page>
