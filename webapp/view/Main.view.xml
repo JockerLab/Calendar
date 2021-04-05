@@ -10,9 +10,11 @@
 				<Page id="page" title="{i18n>title}">
 					<content>
                         <Button
+                            class="sapUiSmallMargin"
                             text="Добавить отпуск"
                             press=".onAddVacation"/>
                         <Button
+                            class="sapUiSmallMargin"
                             text="Отменить отпуск"
                             press=".onCancelVacation"/>
                         <mvc:XMLView viewName="itmo2021calendarsvv.view.VacationTable"/>

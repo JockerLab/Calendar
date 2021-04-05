@@ -14,34 +14,8 @@ sap.ui.define([
 
             onInit: function() {
                 this._oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: sap.ui.core.CalendarType.Gregorian});
-                // Hardcoded an example
                 var oData = {
-                    rows: [
-                        {
-                            "StartDate": "2021-11-01",
-                            "EndDate": "2021-11-11",
-                            "DaysCount": 2,
-                            "WorkingDays": 0
-                        },
-                        {
-                            "StartDate": "2021-05-01",
-                            "EndDate": "2021-05-02",
-                            "DaysCount": 20,
-                            "WorkingDays": 15
-                        },
-                        {
-                            "StartDate": "2021-01-23",
-                            "EndDate": "2021-01-24",
-                            "DaysCount": 2,
-                            "WorkingDays": 0
-                        },
-                        {
-                            "StartDate": "2021-01-10",
-                            "EndDate": "2021-01-11",
-                            "DaysCount": 2,
-                            "WorkingDays": 0
-                        }
-                    ]
+                    rows: []
                 };
                 this._sortList(oData.rows);
                 var oModel = new sap.ui.model.json.JSONModel(oData);
@@ -51,8 +25,6 @@ sap.ui.define([
             onPress: function(oEvent) {
                 this._oPressedId = oEvent.getParameters().id.split("-");
                 this._oPressedId = this._oPressedId[this._oPressedId.length - 1];
-                this.getView().byId("vacationTable").getItems()[this._oPressedId].setSelected(true, true);
-                this.getView().byId("vacationTable").getItems()[this._oPressedId].setActive(true);
             },
 
             cancelVacation: function() {
@@ -71,8 +43,8 @@ sap.ui.define([
                 oCurrentData.rows.push({
                     "StartDate": this._oFormatYyyymmdd.format(oSelectedDates.getStartDate()),
                     "EndDate": this._oFormatYyyymmdd.format(oSelectedDates.getEndDate()),
-                    "DaysCount": 2,
-                    "WorkingDays": 0
+                    "DaysCount": oSelectedDates.countDays + oSelectedDates.countHolidays,
+                    "WorkingDays": oSelectedDates.countDays
                 });
                 this._sortList(oCurrentData.rows);
                 var oCurrentModel = new sap.ui.model.json.JSONModel(oCurrentData);
