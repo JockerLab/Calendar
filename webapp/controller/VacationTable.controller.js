@@ -56,6 +56,7 @@ sap.ui.define([
                 this._sortList(oCurrentData.rows);
                 var oCurrentModel = new sap.ui.model.json.JSONModel(oCurrentData);
                 this.getView().setModel(oCurrentModel, "vacation");
+                this._oCancelButton.setEnabled(false);
             },
 
             _sortList: function(oList) {
