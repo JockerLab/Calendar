@@ -11,6 +11,7 @@ sap.ui.define([
         return Controller.extend("itmo2021calendarsvv.controller.VacationTable", {
             _oFormatYyyymmdd: null,
             _oPressedId: null,
+            _oCancelButton: undefined,
 
             onInit: function() {
                 this._oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: sap.ui.core.CalendarType.Gregorian});
@@ -20,9 +21,14 @@ sap.ui.define([
                 this._sortList(oData.rows);
                 var oModel = new sap.ui.model.json.JSONModel(oData);
                 this.getView().setModel(oModel, "vacation");
+                this._oCancelButton = sap.ui.getCore().byId("__button1");
             },
 
             onPress: function(oEvent) {
+                var oColumnListItem = oEvent.getSource();
+                var oTable = oColumnListItem.getParent();
+                oTable.setSelectedItem(oColumnListItem);
+                this._oCancelButton.setEnabled(true);
                 this._oPressedId = oEvent.getParameters().id.split("-");
                 this._oPressedId = this._oPressedId[this._oPressedId.length - 1];
             },
@@ -32,6 +38,7 @@ sap.ui.define([
                 oCurrentData.rows.splice(this._oPressedId, 1);
                 var oCurrentModel = new sap.ui.model.json.JSONModel(oCurrentData);
                 this.getView().setModel(oCurrentModel, "vacation");
+                this._oCancelButton.setEnabled(false);
             },
 
             getVacations: function() {

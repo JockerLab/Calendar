@@ -6,7 +6,9 @@
 >
 	<Table
         items="{vacation>/rows}"
-        id="vacationTable">
+        id="vacationTable"
+        mode="SingleSelectLeft" 
+        selectionChange="onLineItemSelected">
         <columns>
             <Column>
                 <Text text="Начальная дата (yyyy-mm-dd)" />
@@ -23,7 +25,7 @@
         </columns>
         <items>
             <ColumnListItem
-                type="Navigation"
+                type="Active"
                 press=".onPress">
                 <cells>
                     <Text

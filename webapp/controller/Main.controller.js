@@ -16,6 +16,8 @@ sap.ui.define([
             onInit: function() {
                 this._oVacationController = sap.ui.getCore().byId("__xmlview0").getController();
                 this._oCalendarController = sap.ui.getCore().byId("__xmlview1").getController();
+                sap.ui.getCore().byId("__button0").setEnabled(false);
+                sap.ui.getCore().byId("__button1").setEnabled(false);
             },
 
 			onAddVacation: function(oEvent) {
@@ -32,15 +34,46 @@ sap.ui.define([
             },
 
             _checkVacation: function(oVacations, oSelectedDates) {
-                return this._checkCountDays(oSelectedDates) && 
+                return this._checkCountDaysSum(oVacations, oSelectedDates) && 
+                    this._checkCountDaysMin(oVacations, oSelectedDates) && 
                     this._checkCountVacations(oVacations) && 
                     this._checkIntersection(oVacations, oSelectedDates);
             },
 
-            _checkCountDays: function(oSelectedDates) {
-                var bResult = 14 <= oSelectedDates.countDays && oSelectedDates.countDays <= 28;
+            _checkCountDaysSum: function(oVacations, oSelectedDates) {
+                var oCountDays = oSelectedDates.countDays;
+                for (var iVacation of oVacations) {
+                    oCountDays += iVacation.WorkingDays;
+                }
+                var bResult = oCountDays <= 28;
                 if (!bResult) {
-                    this._sError = "Количество рабочих дней должно быть не менее 14 и не более 28";
+                    this._sError = "Суммарная длительность отпусков должна быть не более 28 дней";
+                }
+                return bResult;
+            },
+
+            _checkCountDaysMin: function(oVacations, oSelectedDates) {
+                var oSumDays = oSelectedDates.countDays;
+                var bResult = true;
+                var bFlag = (oSelectedDates.countDays >= 14);
+                for (var iVacation of oVacations) {
+                    if (iVacation.WorkingDays >= 14 && bFlag) {
+                        bResult = false;
+                        break;
+                    }
+                    if (iVacation.WorkingDays >= 14) {
+                        bFlag = true;
+                    }
+                    oSumDays += iVacation.WorkingDays;
+                }
+                if (28 - oSumDays < 14 && !bFlag) {
+                    bResult = false;
+                }
+                if (oVacations.length === 3 && !bFlag) {
+                    bResult = false;
+                }
+                if (!bResult) {
+                    this._sError = "Один отпуск должен иметь длительность не менее 14 дней";
                 }
                 return bResult;
             },
