@@ -7,19 +7,24 @@
 	<Shell id="shell">
 		<App id="app">
 			<pages>
-				<Page id="page" title="{i18n>title}">
-					<content>
-                        <Button
-                            class="sapUiSmallMargin"
-                            text="Добавить отпуск"
-                            press=".onAddVacation"/>
-                        <Button
-                            class="sapUiSmallMargin"
-                            text="Отменить отпуск"
-                            press=".onCancelVacation"/>
-                        <mvc:XMLView viewName="itmo2021calendarsvv.view.VacationTable"/>
-                        <mvc:XMLView viewName="itmo2021calendarsvv.view.Calendar"/>
-                    </content>
+				<Page 
+                    id="page" 
+                    title="{i18n>title}">
+                    <ScrollContainer
+                        focusable="true">
+                        <content>
+                            <Button
+                                class="sapUiSmallMargin"
+                                text="Добавить отпуск"
+                                press=".onAddVacation"/>
+                            <Button
+                                class="sapUiSmallMargin"
+                                text="Отменить отпуск"
+                                press=".onCancelVacation"/>
+                            <mvc:XMLView viewName="itmo2021calendarsvv.view.VacationTable"/>
+                            <mvc:XMLView viewName="itmo2021calendarsvv.view.Calendar"/>
+                        </content>
+                    </ScrollContainer>
 				</Page>
 			</pages>
 		</App>

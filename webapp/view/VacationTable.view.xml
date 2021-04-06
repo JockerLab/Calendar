@@ -25,7 +25,7 @@
         </columns>
         <items>
             <ColumnListItem
-                type="Active"
+                type="Navigation"
                 press=".onPress">
                 <cells>
                     <Text

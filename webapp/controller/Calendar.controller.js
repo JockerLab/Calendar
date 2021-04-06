@@ -20,6 +20,7 @@ sap.ui.define([
             _oCurrentYear: "2021",
             _oSelectedDates: null,
             _oAddButton: undefined,
+            _oCancelButton: undefined,
 
             onInit: function() {
                 var oCalendar = this.byId("calendar");
@@ -33,6 +34,7 @@ sap.ui.define([
                 this._setHolidays(oHolidays, oLegend);
                 this._setDays(oDays, oCalendar);
                 this._oAddButton = sap.ui.getCore().byId("__button0");
+                this._oCancelButton = sap.ui.getCore().byId("__button1");
             },
 
             handleCalendarSelect: function(oEvent) {
@@ -43,6 +45,8 @@ sap.ui.define([
                 if (this._oSelectedDates.getStartDate() && this._oSelectedDates.getEndDate()) {
                     this._oAddButton.setEnabled(true);
                 }
+                this._oCancelButton.setEnabled(false);
+                sap.ui.getCore().byId("__xmlview0--vacationTable").removeSelections();
             },
 
             getSelectedDates: function() {

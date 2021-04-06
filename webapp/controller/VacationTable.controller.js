@@ -11,6 +11,7 @@ sap.ui.define([
         return Controller.extend("itmo2021calendarsvv.controller.VacationTable", {
             _oFormatYyyymmdd: null,
             _oPressedId: null,
+            _oAddButton: undefined,
             _oCancelButton: undefined,
 
             onInit: function() {
@@ -21,7 +22,13 @@ sap.ui.define([
                 this._sortList(oData.rows);
                 var oModel = new sap.ui.model.json.JSONModel(oData);
                 this.getView().setModel(oModel, "vacation");
+                this._oAddButton = sap.ui.getCore().byId("__button0");
                 this._oCancelButton = sap.ui.getCore().byId("__button1");
+            },
+
+            _deselectDates: function() {
+                this._oAddButton.setEnabled(false);
+                sap.ui.getCore().byId("__xmlview1--calendar").removeAllSelectedDates();
             },
 
             onPress: function(oEvent) {
@@ -31,6 +38,15 @@ sap.ui.define([
                 this._oCancelButton.setEnabled(true);
                 this._oPressedId = oEvent.getParameters().id.split("-");
                 this._oPressedId = this._oPressedId[this._oPressedId.length - 1];
+                this._deselectDates();
+            },
+
+            onLineItemSelected: function(oEvent) {
+                var oColumnListItem = oEvent.getSource();
+                this._oCancelButton.setEnabled(true);
+                this._oPressedId = oColumnListItem.getSelectedContextPaths()[0].split("/");
+                this._oPressedId = this._oPressedId[this._oPressedId.length - 1];
+                this._deselectDates();
             },
 
             cancelVacation: function() {
@@ -39,6 +55,7 @@ sap.ui.define([
                 var oCurrentModel = new sap.ui.model.json.JSONModel(oCurrentData);
                 this.getView().setModel(oCurrentModel, "vacation");
                 this._oCancelButton.setEnabled(false);
+                this._deselectDates();
             },
 
             getVacations: function() {
@@ -57,6 +74,7 @@ sap.ui.define([
                 var oCurrentModel = new sap.ui.model.json.JSONModel(oCurrentData);
                 this.getView().setModel(oCurrentModel, "vacation");
                 this._oCancelButton.setEnabled(false);
+                this._deselectDates();
             },
 
             _sortList: function(oList) {
