@@ -1,0 +1,43 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    class="viewPadding"
+    controller="itmo2021calendarsvv.controller.Main"
+>
+	<Table
+        items="{vacation>/rows}"
+        id="vacationTable"
+        mode="SingleSelectLeft" 
+        selectionChange="onLineItemSelected">
+        <columns>
+            <Column>
+                <Text text="Начальная дата (yyyy-mm-dd)" />
+            </Column>
+            <Column>
+                <Text text="Конечная дата (yyyy-mm-dd)" />
+            </Column>
+            <Column>
+                <Text text="Полное число дней" />
+            </Column>
+            <Column>
+                <Text text="Число входящих рабочих дней" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem
+                type="Active"
+                press=".onPress">
+                <cells>
+                    <Text
+                        text="{vacation>StartDate}" />
+                    <Text
+                        text="{vacation>EndDate}" />
+                    <Text
+                        text="{vacation>DaysCount}" />
+                    <Text
+                        text="{vacation>WorkingDays}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

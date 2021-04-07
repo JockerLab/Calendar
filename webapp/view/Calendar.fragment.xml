@@ -1,10 +1,10 @@
-<mvc:View
-    controllerName="itmo2021calendarsvv.controller.Calendar"
+<core:FragmentDefinition
     xmlns:l="sap.ui.layout"
     xmlns:u="sap.ui.unified"
-    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m"
     class="viewPadding"
+    controller="itmo2021calendarsvv.controller.Main"
 >
 	<l:VerticalLayout>
 		<u:Calendar
@@ -19,4 +19,4 @@
         <u:CalendarLegend
 			id="legend"/>
 	</l:VerticalLayout>
-</mvc:View>
+</core:FragmentDefinition>

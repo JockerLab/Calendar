@@ -1,16 +1,33 @@
 <mvc:View
     controllerName="itmo2021calendarsvv.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     displayBlock="true"
     xmlns="sap.m"
 >
 	<Shell id="shell">
 		<App id="app">
 			<pages>
-				<Page id="page" title="{i18n>title}">
-					<content>
-                        <mvc:XMLView viewName="itmo2021calendarsvv.view.Calendar"/>
-                    </content>
+				<Page 
+                    id="page" 
+                    title="{i18n>title}">
+                    <ScrollContainer
+                        focusable="true">
+                        <content>
+                            <Button
+                                class="sapUiSmallMargin"
+                                text="Добавить отпуск"
+                                press=".onAddVacation"
+                                enabled="{vacation>/isAddButtonEnabled}"/>
+                            <Button
+                                class="sapUiSmallMargin"
+                                text="Отменить отпуск"
+                                press=".onCancelVacation"
+                                enabled="{vacation>/isCancelButtonEnabled}"/>
+                            <core:Fragment fragmentName="itmo2021calendarsvv.view.VacationTable" type="XML"/>
+                            <core:Fragment fragmentName="itmo2021calendarsvv.view.Calendar" type="XML"/>
+                        </content>
+                    </ScrollContainer>
 				</Page>
 			</pages>
 		</App>
