@@ -1,6 +1,7 @@
 <mvc:View
     controllerName="itmo2021calendarsvv.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     displayBlock="true"
     xmlns="sap.m"
 >
@@ -16,13 +17,15 @@
                             <Button
                                 class="sapUiSmallMargin"
                                 text="Добавить отпуск"
-                                press=".onAddVacation"/>
+                                press=".onAddVacation"
+                                enabled="{vacation>/isAddButtonEnabled}"/>
                             <Button
                                 class="sapUiSmallMargin"
                                 text="Отменить отпуск"
-                                press=".onCancelVacation"/>
-                            <mvc:XMLView viewName="itmo2021calendarsvv.view.VacationTable"/>
-                            <mvc:XMLView viewName="itmo2021calendarsvv.view.Calendar"/>
+                                press=".onCancelVacation"
+                                enabled="{vacation>/isCancelButtonEnabled}"/>
+                            <core:Fragment fragmentName="itmo2021calendarsvv.view.VacationTable" type="XML"/>
+                            <core:Fragment fragmentName="itmo2021calendarsvv.view.Calendar" type="XML"/>
                         </content>
                     </ScrollContainer>
 				</Page>
