@@ -2,15 +2,21 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
 	"sap/ui/core/Fragment",
-   "sap/ui/model/json/JSONModel",
-   "sap/ui/core/format/DateFormat",
-   "sap/m/Table"
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/format/DateFormat",
+    "sap/m/Table"
 ],
 	/**
 	 * @param {typeof sap.ui.core.mvc.Controller} Controller
 	 */
 	function (Controller, MessageToast, Fragment, JSONModel, DateFormat, Table) {
 		"use strict";
+
+        const IS_ADD_ENABLED = "isAddButtonEnabled";
+        const IS_CANCEL_ENABLED = "isCancelButtonEnabled";
+        const TYPE_HOLIDAY = "1"
+        const TYPE_PARTLY_DAY = "2"
+        const TYPE_WORKING_DAY = "3"
 
 		return Controller.extend("itmo2021calendarsvv.controller.Main", {
             _aDays: [],
@@ -19,7 +25,6 @@ sap.ui.define([
             _nPartlyId: 0,
             _nPressedId: 0,
             _nWorkingId: 0,
-            _oButtonsEnabledProperty: {},
             _oCalendar: null,
             _oFormatYyyymmdd: null,
             _oHolidays: {},
@@ -36,10 +41,6 @@ sap.ui.define([
                     pattern: "yyyy-MM-dd", 
                     calendarType: sap.ui.core.CalendarType.Gregorian
                 });
-                this._oButtonsEnabledProperty = {
-                    "Add": "isAddButtonEnabled",
-                    "Cancel": "isCancelButtonEnabled"
-                };
                 this._oCalendar.displayDate(new Date(2021, 0));
 
                 var oHead = this.byId("calendar--Head");
@@ -61,12 +62,12 @@ sap.ui.define([
 
             handleCalendarSelect: function(oEvent) {
                 this._oSelectedDates = this._oCalendar.getSelectedDates()[0];
-                this._setEnabledButton(this._oButtonsEnabledProperty.Add, false);
+                this._setEnabledButton(IS_ADD_ENABLED, false);
                 if (this._oSelectedDates.getStartDate() && this._oSelectedDates.getEndDate()) {
                     this._countDays();
-                    this._setEnabledButton(this._oButtonsEnabledProperty.Add, true);
+                    this._setEnabledButton(IS_ADD_ENABLED, true);
                 }
-                this._setEnabledButton(this._oButtonsEnabledProperty.Cancel, false);
+                this._setEnabledButton(IS_CANCEL_ENABLED, false);
                 this._oVacationTable.removeSelections();
             },
 
@@ -117,11 +118,11 @@ sap.ui.define([
                 this._updateVacationModel(a => { a.rows.splice(this._nPressedId, 1) });
             },
 
-            _updateVacationModel: function(f) {
+            _updateVacationModel: function(fnCallback) {
                 var oVacationData = this._getVacationData();
-                f(oVacationData);
+                fnCallback(oVacationData);
                 this.getView().getModel("vacation").refresh();
-                this._setEnabledButton(this._oButtonsEnabledProperty.Cancel, false);
+                this._setEnabledButton(IS_CANCEL_ENABLED, false);
                 this._deselectDates();
             },
 
@@ -202,8 +203,8 @@ sap.ui.define([
                 this._oSelectedDates.countDays = Math.round(
                     (this._oSelectedDates.getEndDate() - this._oSelectedDates.getStartDate()) / 86400000) + 1;
                 this._oSelectedDates.countHolidays = 0;
-                this._aDays.forEach(oDay => {
-                    var oDate = new Date(oDay);
+                this._aDays.forEach(sDay => {
+                    var oDate = new Date(sDay);
                     if (this._oSelectedDates.getStartDate() <= oDate && oDate <= this._oSelectedDates.getEndDate()) {
                         this._oSelectedDates.countDays--;
                         this._oSelectedDates.countHolidays++;
@@ -212,7 +213,7 @@ sap.ui.define([
             },
 
             _deselectDates: function() {
-                this._setEnabledButton(this._oButtonsEnabledProperty.Add, false);
+                this._setEnabledButton(IS_ADD_ENABLED, false);
                 this._oCalendar.removeAllSelectedDates();
             },
 
@@ -231,12 +232,12 @@ sap.ui.define([
             _selectLine: function(oLine) {
                 this._nPressedId = oLine.getSelectedContextPaths()[0].split("/");
                 this._nPressedId = this._nPressedId[this._nPressedId.length - 1];
-                this._setEnabledButton(this._oButtonsEnabledProperty.Cancel, true);
+                this._setEnabledButton(IS_CANCEL_ENABLED, true);
                 this._deselectDates();
             },
 
             _setDays: function(oDays) {
-                for (var oChild of oDays.children) {
+                Array.prototype.forEach.call(oDays.children, oChild => {
                     var oAttributes = oChild.attributes;
                     var oDay = oAttributes.d !== undefined ? oAttributes.d.nodeValue : null;
                     var oType = oAttributes.t !== undefined ? oAttributes.t.nodeValue : null;
@@ -245,7 +246,7 @@ sap.ui.define([
                     var sType = "";
                     
                     switch (oType) {
-                        case "1":
+                        case TYPE_HOLIDAY:
                             if (oHoliday !== null) {
                                 sType = this._getType(oHoliday);
                             } else {
@@ -253,17 +254,17 @@ sap.ui.define([
                                 oHoliday = this._nNonWorkingId;
                             }
                             break;
-                        case "2":
+                        case TYPE_PARTLY_DAY:
                             sType = this._getType(this._nPartlyId);
                             oHoliday = this._nPartlyId;
                             break;
-                        case "3":
+                        case TYPE_WORKING_DAY:
                             sType = this._getType(this._nWorkingId);
                             oHoliday = this._nWorkingId;
                             break;
                     }
                     var oDate = new Date(this._nCurrentYear, oDay.split('.')[0] - 1, oDay.split('.')[1]);
-                    if (oType === "1") {
+                    if (oType === TYPE_HOLIDAY) {
                         this._aDays.push(oDate);
                     }
                     this._oCalendar.addSpecialDate(new sap.ui.unified.DateTypeRange({
@@ -271,7 +272,7 @@ sap.ui.define([
 						type : sType,
 						tooltip : this._oHolidays[oHoliday]
                     }));
-                }
+                });
             },
 
             _setEnabledButton: function(sPropertyName, bValue) {
@@ -281,13 +282,13 @@ sap.ui.define([
 
             _setHolidays: function(oHolidays) {
                 var nId = 1;
-                for (var holiday of oHolidays.children) {
-                    var oAttributes = holiday.attributes;
+                Array.prototype.forEach.call(oHolidays.children, oHoliday => {
+                    var oAttributes = oHoliday.attributes;
                     var oId = oAttributes.id.nodeValue;
                     var oTitle = oAttributes.title.nodeValue;
                     this._addHoliday(oId, oTitle);
                     nId++;
-                }
+                });
                 this._nNonWorkingId = nId;
                 this._addHoliday(nId++, "Дополнительный выходной");
                 this._nWorkingId = nId;
