@@ -12,8 +12,8 @@ sap.ui.define([
 	function (Controller, MessageToast, Fragment, JSONModel, DateFormat, Table) {
 		"use strict";
 
-        const IS_ADD_ENABLED = "isAddButtonEnabled";
-        const IS_CANCEL_ENABLED = "isCancelButtonEnabled";
+        const IS_ADD_ENABLED = "/isAddButtonEnabled";
+        const IS_CANCEL_ENABLED = "/isCancelButtonEnabled";
         const TYPE_HOLIDAY = "1"
         const TYPE_PARTLY_DAY = "2"
         const TYPE_WORKING_DAY = "3"
@@ -276,8 +276,7 @@ sap.ui.define([
             },
 
             _setEnabledButton: function(sPropertyName, bValue) {
-                this._getVacationData()[sPropertyName] = bValue;
-                this.getView().getModel("vacation").refresh();
+                this.getView().getModel("vacation").setProperty(sPropertyName, bValue);
             },
 
             _setHolidays: function(oHolidays) {
